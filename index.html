@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -142,15 +142,6 @@ a{color:var(--link)}
 .nav-links a:hover{color:var(--text)}
 .nav-icon-link{display:flex;align-items:center;gap:6px}
 .nav-icon-link svg{width:14px;height:14px}
-.theme-toggle{
-  background:none;border:none;cursor:pointer;color:var(--text-dim);
-  display:flex;align-items:center;padding:0;transition:color 0.15s ease;
-}
-.theme-toggle:hover{color:var(--text)}
-.theme-toggle svg{width:16px;height:16px}
-.theme-toggle .ic-sun{display:none}
-[data-theme="dark"] .theme-toggle .ic-moon{display:none}
-[data-theme="dark"] .theme-toggle .ic-sun{display:block}
 
 /* SECTIONS */
 section{padding:64px 0}
@@ -251,21 +242,6 @@ section#hero{padding:0}
   display:block;
 }
 [data-theme="dark"] .hero-cube{border-color:transparent}
-
-.scroll-cue{
-  position:absolute;
-  left:50%;
-  bottom:36px;
-  transform:translateX(-50%);
-  font-size:12px;
-  letter-spacing:0.08em;
-  text-transform:uppercase;
-  color:var(--text-faint);
-  z-index:2;
-  will-change:opacity;
-  animation:fadeIn 0.7s ease forwards 1s;
-  opacity:0;
-}
 
 /* ABOUT (after hero) */
 #mobile-hero{
@@ -486,10 +462,6 @@ h2.sec-title{
         <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
         GitHub
       </a>
-      <button class="theme-toggle" data-theme-toggle title="Toggle light / dark" aria-label="Toggle theme">
-        <svg class="ic-moon" viewBox="0 0 20 20" fill="none"><path d="M16 11.3A6 6 0 1 1 8.7 4a4.7 4.7 0 0 0 7.3 7.3Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
-        <svg class="ic-sun" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="3.2" stroke="currentColor" stroke-width="1.5"/><path d="M10 2.6v2M10 15.4v2M2.6 10h2M15.4 10h2M4.7 4.7l1.4 1.4M13.9 13.9l1.4 1.4M4.7 15.3l1.4-1.4M13.9 6.1l1.4-1.4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-      </button>
     </div>
     </div>
   </nav>
@@ -506,7 +478,6 @@ h2.sec-title{
           <div class="hero-sub">Full-stack developer &middot; Data Science student &middot; Lagos, Nigeria</div>
           <div class="avail"><span class="avail-dot"></span> Available for internships, remote and freelance work</div>
         </div>
-        <div class="scroll-cue" id="scrollCue">Scroll</div>
       </div>
     </div>
   </div>
@@ -787,25 +758,9 @@ h2.sec-title{
 
 <script>
 (function(){
-  function persist(v){ try{ localStorage.setItem('portfolio-theme', v); }catch(e){} }
-  function applyInitial(){
-    var saved = null;
-    try{ saved = localStorage.getItem('portfolio-theme'); }catch(e){}
-    if(saved === 'dark'){ document.documentElement.setAttribute('data-theme','dark'); }
-    else if(saved === 'light'){ document.documentElement.removeAttribute('data-theme'); }
-    else if(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches){
-      document.documentElement.setAttribute('data-theme','dark');
-    }
-  }
-  applyInitial();
-  function toggleTheme(){
-    var dark = document.documentElement.getAttribute('data-theme')==='dark';
-    if(dark){ document.documentElement.removeAttribute('data-theme'); persist('light'); }
-    else { document.documentElement.setAttribute('data-theme','dark'); persist('dark'); }
-  }
-  document.querySelectorAll('[data-theme-toggle]').forEach(function(b){
-    b.addEventListener('click', toggleTheme);
-  });
+  // Permanent dark theme
+  document.documentElement.setAttribute('data-theme','dark');
+  try{ localStorage.setItem('portfolio-theme','dark'); }catch(e){}
 })();
 
 (function(){
@@ -825,7 +780,6 @@ h2.sec-title{
   var name   = document.getElementById('heroName');
   var cube   = document.getElementById('heroCube');
   var meta   = document.getElementById('heroMeta');
-  var cue    = document.getElementById('scrollCue');
   if(!scroll || !name) return;
 
   var mobile = window.matchMedia('(max-width:760px)');
@@ -860,12 +814,10 @@ h2.sec-title{
     if(p > 0.005){
       if(cube) cube.style.setProperty('opacity', fade, 'important');
       if(meta) meta.style.setProperty('opacity', fade, 'important');
-      if(cue)  cue.style.setProperty('opacity', clamp(1 - p*5, 0, 1), 'important');
     } else {
       // let the load-in animation play at rest
       if(cube) cube.style.removeProperty('opacity');
       if(meta) meta.style.removeProperty('opacity');
-      if(cue)  cue.style.removeProperty('opacity');
     }
   }
 
