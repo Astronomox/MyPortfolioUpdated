@@ -16,6 +16,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script>document.documentElement.classList.add('js');</script>
 <script>(function(){console.log(`
                                     ∞∞∞≈÷×÷=∞
                                √√≈≈√ π≈                            √÷==≈π
@@ -436,6 +437,65 @@ h2.sec-title{
   margin-bottom:24px;
 }
 
+/* ---- LIVE MOTION ---- */
+.js .reveal{
+  opacity:0;
+  transform:translateY(48px);
+  transition:opacity .8s cubic-bezier(.16,1,.3,1), transform .8s cubic-bezier(.16,1,.3,1);
+}
+.js .reveal.in{opacity:1;transform:none}
+
+/* section titles enter with a stronger sweep */
+.js h2.sec-title.reveal{transform:translateY(48px) translateX(-14px)}
+.js h2.sec-title.reveal.in{transform:none}
+
+/* project rows: responsive hover */
+.proj-item{transition:border-color .3s ease, padding-left .3s cubic-bezier(.16,1,.3,1)}
+.proj-name{transition:transform .3s cubic-bezier(.16,1,.3,1)}
+.proj-name::after{
+  content:"\2192";
+  display:inline-block;
+  margin-left:10px;
+  opacity:0;
+  transform:translateX(-8px);
+  transition:opacity .3s ease, transform .3s cubic-bezier(.16,1,.3,1);
+  color:var(--text-faint);
+}
+.proj-item:hover{padding-left:14px;border-color:var(--text-dim)}
+.proj-item:hover .proj-name{transform:translateX(2px)}
+.proj-item:hover .proj-name::after{opacity:1;transform:translateX(0)}
+.proj-item:hover .proj-desc{color:var(--text)}
+.proj-tag{transition:color .3s ease}
+.proj-item:hover .proj-tag{color:var(--text-dim)}
+
+/* more rows, client, skills, exp, edu: tactile shift on hover */
+.more-row{transition:padding-left .28s cubic-bezier(.16,1,.3,1)}
+.more-row:hover{padding-left:8px}
+.client-item,.skills-block,.exp-item,.edu-item{transition:transform .28s cubic-bezier(.16,1,.3,1)}
+.client-item:hover,.skills-block:hover{transform:translateX(6px)}
+.exp-item:hover,.edu-item:hover{transform:translateX(4px)}
+
+/* availability: a living status ping (object, not background) */
+.avail-dot{position:relative}
+.avail-dot::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:50%;
+  box-shadow:0 0 0 0 rgba(63,185,80,0.6);
+  animation:availPing 2.4s cubic-bezier(.16,1,.3,1) infinite;
+}
+@keyframes availPing{
+  0%{box-shadow:0 0 0 0 rgba(63,185,80,0.55)}
+  70%{box-shadow:0 0 0 10px rgba(63,185,80,0)}
+  100%{box-shadow:0 0 0 0 rgba(63,185,80,0)}
+}
+
+@media(prefers-reduced-motion: reduce){
+  .js .reveal{opacity:1 !important;transform:none !important;transition:none !important}
+  .avail-dot::after{animation:none}
+}
+
 /* RESPONSIVE */
 @media(max-width:600px){
   section{padding:48px 0}
@@ -827,6 +887,33 @@ h2.sec-title{
   // re-measure after fonts/intro settle
   window.addEventListener('load', function(){ setTimeout(init, 400); });
   setTimeout(init, 200);
+})();
+
+// Scroll reveals + stagger — brings the page to life below the hero
+(function(){
+  var sel = '.sec-title, .exp-item, .proj-item, .more-row, .client-item, .skills-block, .edu-item, .clink, #about .prose p, .foot';
+  var targets = document.querySelectorAll(sel);
+  targets.forEach(function(el){ el.classList.add('reveal'); });
+
+  // stagger items within their container
+  var groups = ['#experience','#projects','.more-projects','#client-work','#skills','#education','.contact-list','.prose'];
+  document.querySelectorAll(groups.join(',')).forEach(function(g){
+    g.querySelectorAll('.reveal').forEach(function(el,i){
+      el.style.transitionDelay = Math.min(i*0.07, 0.42) + 's';
+    });
+  });
+
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(!('IntersectionObserver' in window) || reduce){
+    targets.forEach(function(el){ el.classList.add('in'); });
+    return;
+  }
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); }
+    });
+  }, {threshold:0.12, rootMargin:'0px 0px -6% 0px'});
+  targets.forEach(function(el){ io.observe(el); });
 })();
 </script>
 
