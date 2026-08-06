@@ -1106,6 +1106,9 @@ h2.sec-title{
       var active = Math.round(p * (dotEls.length - 1));
       dotEls.forEach(function(d, i){
         d.classList.toggle('active', i === active);
+      });
+    }
+  }
 })();
 
 // Scroll reveals + stagger — brings the page to life below the hero
