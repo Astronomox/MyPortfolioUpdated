@@ -1030,7 +1030,11 @@ h2.sec-title{
     var vw = window.innerWidth;
     var maxScale = Math.min(1.9, (vw*0.82) / W0);   // don't overflow viewport
     var scale = 1 + (maxScale - 1) * e;
-    // keep the scaled box centered horizontally
+
+    // grow the actual font-size (crisp at every step) instead of CSS-scaling the box
+    name.style.fontSize = (F0 * scale) + 'px';
+
+    // keep the growing box centered horizontally (width tracks font-size ~linearly)
     var tx = (vw/2) - L0 - (W0*scale)/2;
     name.style.transform = 'translateX(' + (tx*e) + 'px) scale(' + scale + ')';
 
