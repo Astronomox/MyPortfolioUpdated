@@ -1161,6 +1161,8 @@ h2.sec-title{
 // Nav: hide on scroll down, show on scroll up
 (function(){
   var nav = document.querySelector('.nav');
+  if(!nav) return;
+  var lastY = window.scrollY, ticking = false;
 // Smooth scroll (Lenis) — the Locomotive signature
 (function(){
   if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
