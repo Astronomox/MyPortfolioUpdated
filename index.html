@@ -1076,6 +1076,8 @@ h2.sec-title{
   if(dots){
     cards.forEach(function(_, i){
       var d = document.createElement('div');
+      d.className = 'h-progress-dot' + (i === 0 ? ' active' : '');
+      dots.appendChild(d);
 })();
 
 // Scroll reveals + stagger — brings the page to life below the hero
