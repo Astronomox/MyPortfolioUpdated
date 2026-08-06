@@ -114,7 +114,6 @@ a{color:var(--link)}
   transform:translateY(0);
   transition:transform 0.35s cubic-bezier(.16,1,.3,1);
 }
-.nav.nav-hidden{transform:translateY(-100%)}
 [data-theme="dark"] .nav{
   background:rgba(0,0,0,0.72);
 }
@@ -364,80 +363,6 @@ section#hero{padding:0}
 }
 .proj-desc{font-size:14.5px;color:var(--text-dim);line-height:1.6;max-width:560px}
 .proj-stack{font-size:12.5px;color:var(--text-faint);margin-top:6px}
-
-/* HORIZONTAL PROJECT GALLERY */
-.h-projects-outer{
-  position:relative;
-  width:100vw;
-  margin-left:calc(50% - 50vw);
-  margin-right:calc(50% - 50vw);
-}
-.h-projects-sticky{
-  position:sticky;
-  top:0;
-  height:100vh;
-  overflow:hidden;
-  display:flex;
-  align-items:center;
-}
-.h-projects-track{
-  display:flex;
-  gap:28px;
-  padding:0 max(24px,calc(50vw - 330px));
-  will-change:transform;
-}
-.h-card{
-  flex:0 0 auto;
-  width:min(440px,78vw);
-  padding:36px 32px;
-  border:1px solid var(--border);
-  border-radius:20px;
-  background:var(--bg-raised);
-  text-decoration:none;
-  color:inherit;
-  display:flex;
-  flex-direction:column;
-  gap:12px;
-  transition:border-color .3s ease, transform .35s cubic-bezier(.16,1,.3,1);
-}
-.h-card:hover{border-color:var(--text-dim);transform:translateY(-8px)}
-.h-card-index{font-size:12.5px;color:var(--text-faint);font-variant-numeric:tabular-nums;letter-spacing:.02em}
-.h-card-tag{font-size:12px;color:var(--text-faint);text-transform:uppercase;letter-spacing:.05em}
-.h-card-name{font-size:23px;font-weight:700;letter-spacing:-0.01em;display:flex;align-items:center}
-.h-card-name::after{
-  content:"\2192";
-  display:inline-block;
-  margin-left:9px;
-  opacity:0;
-  transform:translateX(-6px);
-  transition:opacity .3s ease, transform .3s cubic-bezier(.16,1,.3,1);
-  color:var(--text-faint);
-}
-.h-card:hover .h-card-name::after{opacity:1;transform:translateX(0)}
-.h-card-desc{font-size:14.5px;color:var(--text-dim);line-height:1.65;flex:1}
-.h-card-stack{font-size:12.5px;color:var(--text-faint)}
-.h-progress-wrap{
-  position:absolute;
-  left:50%;
-  bottom:36px;
-  transform:translateX(-50%);
-  display:flex;
-  gap:6px;
-  z-index:3;
-}
-.h-progress-dot{
-  width:6px;height:6px;border-radius:50%;
-  background:var(--border);
-  transition:background .25s ease, width .25s ease, border-radius .25s ease;
-}
-.h-progress-dot.active{background:var(--text);width:20px;border-radius:3px}
-
-.m-projects-list{display:none}
-
-@media(max-width:760px){
-  .h-projects-outer{display:none}
-  .m-projects-list{display:block}
-}
 
 /* MORE PROJECTS */
 .more-projects{margin-top:28px}
@@ -722,78 +647,10 @@ h2.sec-title{
     </div>
   </section>
 
-  <!-- PROJECTS (horizontal pinned gallery) -->
-  <section id="projects" style="padding-bottom:0">
+  <!-- PROJECTS -->
+  <section id="projects">
     <h2 class="sec-title">Selected projects</h2>
-  </section>
 
-  <div class="h-projects-outer" id="hProjectsOuter">
-    <div class="h-projects-sticky" id="hProjectsSticky">
-      <div class="h-projects-track" id="hProjectsTrack">
-
-        <a href="https://dermaflow-zeta.vercel.app" target="_blank" rel="noopener" class="h-card">
-          <div class="h-card-index">01 / 07</div>
-          <div class="h-card-tag">Healthtech</div>
-          <div class="h-card-name">Dermaflow AI</div>
-          <div class="h-card-desc">AI skin health diagnostic platform with heatmap explainability, a Bio-LLM chatbot, and an oncology triage system. Built solo to address the cost barrier of dermatologist visits in Nigeria.</div>
-          <div class="h-card-stack">Next.js &middot; Gemini AI &middot; Python</div>
-        </a>
-
-        <a href="https://echo-journal-app.vercel.app" target="_blank" rel="noopener" class="h-card">
-          <div class="h-card-index">02 / 07</div>
-          <div class="h-card-tag">AI Journal</div>
-          <div class="h-card-name">EchoJournal</div>
-          <div class="h-card-desc">AI journaling app with voice transcription, Echo Mode pattern recognition across past entries, and mood sentiment tracking with visualisations.</div>
-          <div class="h-card-stack">Next.js &middot; Firebase &middot; Gemini AI</div>
-        </a>
-
-        <a href="https://bizpadi.vercel.app" target="_blank" rel="noopener" class="h-card">
-          <div class="h-card-index">03 / 07</div>
-          <div class="h-card-tag">AI / Fintech</div>
-          <div class="h-card-name">BizPadi</div>
-          <div class="h-card-desc">AI business companion that matches Nigerian SMEs to grants, loans, and support programmes (TEF, BOI, SMEDAN) entirely over WhatsApp.</div>
-          <div class="h-card-stack">Next.js &middot; WhatsApp API &middot; Gemini AI</div>
-        </a>
-
-        <a href="https://verifyai-hr.vercel.app" target="_blank" rel="noopener" class="h-card">
-          <div class="h-card-index">04 / 07</div>
-          <div class="h-card-tag">HR-tech</div>
-          <div class="h-card-name">VerifyAI</div>
-          <div class="h-card-desc">Payroll integrity platform that detects ghost workers before disbursement using Isolation Forest anomaly detection, with Squad API escrow. Built for SquadHacks 3.0.</div>
-          <div class="h-card-stack">Python &middot; Isolation Forest ML &middot; Squad API</div>
-        </a>
-
-        <a href="https://tenda-delta.vercel.app" target="_blank" rel="noopener" class="h-card">
-          <div class="h-card-index">05 / 07</div>
-          <div class="h-card-tag">SME tools</div>
-          <div class="h-card-name">Tenda</div>
-          <div class="h-card-desc">Customer retention platform for Nigerian merchants: tracks sales and lapsed customers, auto-generates WhatsApp follow-up prompts, and surfaces revenue trends.</div>
-          <div class="h-card-stack">Next.js &middot; Supabase</div>
-        </a>
-
-        <a href="https://hrflow-two.vercel.app" target="_blank" rel="noopener" class="h-card">
-          <div class="h-card-index">06 / 07</div>
-          <div class="h-card-tag">HR-tech</div>
-          <div class="h-card-name">HRFlow</div>
-          <div class="h-card-desc">HR and internal communications platform covering attendance, leave tracking, role-based access control, and real-time team messaging.</div>
-          <div class="h-card-stack">Next.js &middot; RBAC</div>
-        </a>
-
-        <a href="https://slide-iq.vercel.app" target="_blank" rel="noopener" class="h-card">
-          <div class="h-card-index">07 / 07</div>
-          <div class="h-card-tag">Edtech / AI</div>
-          <div class="h-card-name">SlideIQ</div>
-          <div class="h-card-desc">AI quiz generator that turns any lecture file into a full exam. MCQ, theory questions, and personality-voiced feedback, entirely in the browser. 8 lecturer personalities, quiz history, and PDF/DOCX export.</div>
-          <div class="h-card-stack">React &middot; Vite &middot; Gemini AI &middot; Firebase &middot; WebGL</div>
-        </a>
-
-      </div>
-      <div class="h-progress-wrap" id="hProgressWrap"></div>
-    </div>
-  </div>
-
-  <!-- MOBILE PROJECTS (plain vertical list, base design) -->
-  <div class="m-projects-list">
     <a href="https://dermaflow-zeta.vercel.app" target="_blank" rel="noopener" class="proj-item">
       <div class="proj-head">
         <div class="proj-name">Dermaflow AI</div>
@@ -847,18 +704,15 @@ h2.sec-title{
       <div class="proj-desc">HR and internal communications platform covering attendance, leave tracking, role-based access control, and real-time team messaging.</div>
       <div class="proj-stack">Next.js &middot; RBAC</div>
     </a>
-
     <a href="https://slide-iq.vercel.app" target="_blank" rel="noopener" class="proj-item">
       <div class="proj-head">
         <div class="proj-name">SlideIQ</div>
         <div class="proj-tag">Edtech / AI</div>
       </div>
       <div class="proj-desc">AI quiz generator that turns any lecture file into a full exam. MCQ, theory questions, and personality-voiced feedback, entirely in the browser. 8 lecturer personalities, quiz history, and PDF/DOCX export.</div>
-      <div class="proj-stack">React &middot; Vite &middot; Gemini AI &middot; Firebase &middot; WebGL</div>
+      <div class="proj-stack">React · Vite · Gemini AI · Firebase · WebGL</div>
     </a>
-  </div>
 
-  <section id="projects-more" style="padding-top:32px">
     <div class="more-projects">
       <div class="more-projects-label">More projects</div>
       <div class="more-row">
@@ -1005,23 +859,21 @@ h2.sec-title{
   if(!scroll || !name) return;
 
   var mobile = window.matchMedia('(max-width:760px)');
-  var W0=0, L0=0, F0=0;
+  var W0=0, L0=0;
 
   function measure(){
-    // reset any inline overrides to read natural geometry
+    // reset transform to read natural geometry
     name.style.transform='none';
-    name.style.fontSize='';
     var r = name.getBoundingClientRect();
     W0 = r.width;
     L0 = r.left;   // left edge in viewport at rest
-    F0 = parseFloat(window.getComputedStyle(name).fontSize);
   }
 
   function clamp(v,a,b){return Math.max(a,Math.min(b,v));}
   function ease(t){return t<0.5 ? 2*t*t : 1-Math.pow(-2*t+2,2)/2;}
 
   function frame(){
-    if(mobile.matches){ name.style.transform='none'; name.style.fontSize=''; return; }
+    if(mobile.matches){ name.style.transform='none'; return; }
     var top = scroll.getBoundingClientRect().top;
     var runway = scroll.offsetHeight - window.innerHeight;
     var p = clamp(-top / runway, 0, 1);
@@ -1030,13 +882,9 @@ h2.sec-title{
     var vw = window.innerWidth;
     var maxScale = Math.min(1.9, (vw*0.82) / W0);   // don't overflow viewport
     var scale = 1 + (maxScale - 1) * e;
-
-    // grow the actual font-size (crisp at every step) instead of CSS-scaling the box
-    name.style.fontSize = (F0 * scale) + 'px';
-
-    // keep the growing box centered horizontally (width tracks font-size ~linearly)
+    // keep the scaled box centered horizontally
     var tx = (vw/2) - L0 - (W0*scale)/2;
-    name.style.transform = 'translateX(' + (tx*e) + 'px)';
+    name.style.transform = 'translateX(' + (tx*e) + 'px) scale(' + scale + ')';
 
     var fade = clamp(1 - p*2.4, 0, 1);
     if(p > 0.005){
@@ -1047,9 +895,6 @@ h2.sec-title{
       if(cube) cube.style.removeProperty('opacity');
       if(meta) meta.style.removeProperty('opacity');
     }
-
-    // parallax: cube drifts slower than the scroll, name drifts a touch faster
-    if(cube) cube.style.transform = 'translateY(calc(-50% + ' + (p*70) + 'px))';
   }
 
   function init(){ measure(); frame(); }
@@ -1058,62 +903,6 @@ h2.sec-title{
   // re-measure after fonts/intro settle
   window.addEventListener('load', function(){ setTimeout(init, 400); });
   setTimeout(init, 200);
-})();
-
-// Horizontal pinned project gallery — vertical scroll drives horizontal pan
-(function(){
-  var outer  = document.getElementById('hProjectsOuter');
-  var sticky = document.getElementById('hProjectsSticky');
-  var track  = document.getElementById('hProjectsTrack');
-  var dots   = document.getElementById('hProgressWrap');
-  if(!outer || !sticky || !track) return;
-
-  var mobile = window.matchMedia('(max-width:760px)');
-  var maxScroll = 0;
-  var cards = track.querySelectorAll('.h-card');
-
-  // build dot indicators
-  if(dots){
-    cards.forEach(function(_, i){
-      var d = document.createElement('div');
-      d.className = 'h-progress-dot' + (i === 0 ? ' active' : '');
-      dots.appendChild(d);
-    });
-  }
-  var dotEls = dots ? dots.querySelectorAll('.h-progress-dot') : [];
-
-  function measure(){
-    if(mobile.matches){
-      outer.style.height = 'auto';
-      track.style.transform = 'none';
-      return;
-    }
-    var trackW = track.scrollWidth;
-    var viewW  = sticky.clientWidth;
-    maxScroll  = Math.max(0, trackW - viewW);
-    outer.style.height = (maxScroll + window.innerHeight) + 'px';
-  }
-
-  function clamp(v,a,b){ return Math.max(a, Math.min(b, v)); }
-
-  function frame(){
-    if(mobile.matches || maxScroll <= 0) return;
-    var top = outer.getBoundingClientRect().top;
-    var p = clamp(-top / maxScroll, 0, 1);
-    track.style.transform = 'translateX(' + (-p * maxScroll) + 'px)';
-
-    if(dotEls.length){
-      var active = Math.round(p * (dotEls.length - 1));
-      dotEls.forEach(function(d, i){
-        d.classList.toggle('active', i === active);
-      });
-    }
-  }
-
-  window.addEventListener('scroll', frame, {passive:true});
-  window.addEventListener('resize', function(){ measure(); frame(); });
-  window.addEventListener('load', function(){ setTimeout(function(){ measure(); frame(); }, 400); });
-  setTimeout(function(){ measure(); frame(); }, 200);
 })();
 
 // Scroll reveals + stagger — brings the page to life below the hero
