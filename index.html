@@ -293,10 +293,17 @@ section#hero{padding:0}
 }
 
 @media(max-width:760px){
-  .hero-scroll{display:none}          /* desktop cube hero off on mobile */
-  #mobile-hero{display:block}         /* plain header on mobile */
-  #about > .about-top{display:none}   /* avoid duplicate headshot below */
-  .avail{justify-content:flex-start}
+  /* HERO ZOOM now ON for mobile */
+  #mobile-hero{display:none}
+  #about > .about-top{display:flex}     /* headshot returns to about */
+  .hero-scroll{height:175vh}
+  .hero-sticky{height:100svh}
+  .hero-stage{padding:0 22px}
+  .hero-name{font-size:27px}            /* smaller base so the zoom has room to grow */
+  .hero-cube{display:none}              /* drop the side cube on mobile — name is the focus */
+  .hero-meta{left:22px;bottom:calc(50% - 92px)}
+  .hero-sub{font-size:13.5px}
+  .avail{justify-content:flex-start;font-size:12px}
 }
 
 .prose p{
@@ -435,8 +442,12 @@ section#hero{padding:0}
 .m-projects-list{display:none}
 
 @media(max-width:760px){
-  .h-projects-outer{display:none}
-  .m-projects-list{display:block}
+  .h-projects-outer{display:block}    /* horizontal gallery now ON for mobile */
+  .m-projects-list{display:none}
+  .h-sticky, .h-projects-sticky{height:100svh}
+  .h-card{width:82vw;padding:24px 22px;border-radius:16px}
+  .h-card-name{font-size:20px}
+  .h-card-desc{font-size:14px}
 }
 
 /* MORE PROJECTS */
@@ -586,11 +597,46 @@ h2.sec-title{
 }
 
 /* RESPONSIVE */
+@media(max-width:760px){
+  /* COMPACT DENSITY — fit more per glance, no content removed */
+  section{padding:38px 0}
+  .wrap{padding:0 20px}
+  h2.sec-title{font-size:18px;margin-bottom:16px}
+  .prose p{font-size:14px;line-height:1.6;margin-bottom:13px}
+  .role-line{font-size:14px}
+  .about-top{gap:16px;margin-bottom:24px}
+  .headshot{width:70px;height:70px}
+
+  .exp-item{margin-bottom:22px}
+  .exp-role{font-size:14.5px}
+  .exp-co{font-size:13px;margin-bottom:7px}
+  .exp-desc{font-size:13.5px;line-height:1.55}
+  .exp-desc ul{padding-left:16px}
+  .exp-desc li{margin-bottom:4px}
+  .exp-time{font-size:12px}
+
+  .more-projects{margin-top:20px}
+  .more-row{padding:8px 0;font-size:13.5px}
+  .more-row .more-stack{font-size:11.5px}
+
+  .client-item{margin-bottom:12px}
+  .client-name{font-size:14.5px}
+  .client-desc{font-size:13.5px}
+
+  .skills-block{margin-bottom:18px}
+  .skills-label{font-size:12px;margin-bottom:7px}
+  .skills-line{font-size:14px;line-height:1.6}
+
+  .edu-item{margin-bottom:18px}
+  .edu-deg{font-size:15px}
+  .edu-meta{font-size:12.5px}
+  .edu-desc{font-size:13.5px;line-height:1.55}
+
+  .clink{padding:11px 0}
+  .clink-k,.clink-v{font-size:13px}
+}
+
 @media(max-width:600px){
-  section{padding:48px 0}
-  .about-top{gap:18px}
-  .headshot{width:76px;height:76px}
-  .h1{font-size:25px}
   .nav-links{gap:14px}
   .exp-head{flex-direction:column;align-items:flex-start;gap:2px}
   .proj-head{flex-direction:column;align-items:flex-start;gap:2px}
@@ -1021,7 +1067,6 @@ h2.sec-title{
   function ease(t){return t<0.5 ? 2*t*t : 1-Math.pow(-2*t+2,2)/2;}
 
   function frame(){
-    if(mobile.matches){ name.style.transform='none'; name.style.fontSize=''; return; }
     var top = scroll.getBoundingClientRect().top;
     var runway = scroll.offsetHeight - window.innerHeight;
     var p = clamp(-top / runway, 0, 1);
@@ -1083,11 +1128,6 @@ h2.sec-title{
   var dotEls = dots ? dots.querySelectorAll('.h-progress-dot') : [];
 
   function measure(){
-    if(mobile.matches){
-      outer.style.height = 'auto';
-      track.style.transform = 'none';
-      return;
-    }
     var trackW = track.scrollWidth;
     var viewW  = sticky.clientWidth;
     maxScroll  = Math.max(0, trackW - viewW);
@@ -1097,7 +1137,7 @@ h2.sec-title{
   function clamp(v,a,b){ return Math.max(a, Math.min(b, v)); }
 
   function frame(){
-    if(mobile.matches || maxScroll <= 0) return;
+    if(maxScroll <= 0) return;
     var top = outer.getBoundingClientRect().top;
     var p = clamp(-top / maxScroll, 0, 1);
     track.style.transform = 'translateX(' + (-p * maxScroll) + 'px)';
