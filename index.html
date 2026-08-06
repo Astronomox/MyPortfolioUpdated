@@ -1086,6 +1086,9 @@ h2.sec-title{
     if(mobile.matches){
       outer.style.height = 'auto';
       track.style.transform = 'none';
+      return;
+    }
+    var trackW = track.scrollWidth;
 })();
 
 // Scroll reveals + stagger — brings the page to life below the hero
