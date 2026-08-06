@@ -246,6 +246,8 @@ section#hero{padding:0}
   object-fit:cover;
   display:block;
 }
+.hero-cube-shot{display:none}
+.about-cube{display:none}
 [data-theme="dark"] .hero-cube{border-color:transparent}
 
 /* ABOUT (after hero) */
@@ -300,17 +302,34 @@ section#hero{padding:0}
   .hero-sticky{height:100svh}
   .hero-stage{padding:0 22px}
   .hero-name{font-size:27px}            /* smaller base so the zoom has room to grow */
+  /* SWAP: hero visual is now the headshot circle (was the cube) */
   .hero-cube{
-    width:min(210px,52vw);
-    height:min(210px,52vw);
+    width:min(150px,40vw);
+    height:min(150px,40vw);
     right:auto;
     left:50%;
-    top:30%;
+    top:26%;
     transform:translate(-50%,-50%);
+    border-radius:50%;
+    background:transparent;
+    border:none;
   }
-  .hero-meta{left:22px;bottom:calc(50% - 92px)}
+  .hero-cube video{display:none}
+  .hero-cube-shot{display:block;width:100%;height:100%;object-fit:cover;filter:grayscale(0.15)}
+  .hero-meta{left:22px;bottom:12%}
   .hero-sub{font-size:13.5px}
   .avail{justify-content:flex-start;font-size:12px}
+  /* SWAP: about-section visual is now the cube (was the headshot) */
+  #about .headshot{display:none}
+  .about-cube{
+    display:block;
+    width:72px;height:72px;
+    border-radius:14px;
+    overflow:hidden;
+    background:#000;
+    flex-shrink:0;
+  }
+  .about-cube video{width:100%;height:100%;object-fit:cover;display:block}
 }
 
 .prose p{
@@ -677,6 +696,7 @@ h2.sec-title{
         <h1 class="hero-name" id="heroName"><span class="intro">Abdullahi Oriola</span></h1>
         <div class="hero-cube" id="heroCube">
           <video src="cube.mp4" autoplay loop muted playsinline preload="auto"></video>
+          <img src="headshot.png" alt="Abdullahi Oriola" class="hero-cube-shot">
         </div>
         <div class="hero-meta" id="heroMeta">
           <div class="hero-sub">Full-stack developer &middot; Data Science student &middot; Lagos, Nigeria</div>
@@ -702,6 +722,7 @@ h2.sec-title{
   <section id="about">
     <div class="about-top">
       <img src="headshot.png" alt="Abdullahi Oriola" class="headshot" id="headshotEl">
+      <div class="about-cube"><video src="cube.mp4" autoplay loop muted playsinline preload="auto"></video></div>
       <div>
         <div class="role-line">Full-stack developer &middot; Data Science student &middot; Lagos, Nigeria</div>
       </div>
@@ -1088,12 +1109,15 @@ h2.sec-title{
 
     // keep the growing box centered horizontally (width tracks font-size ~linearly)
     var tx = (vw/2) - L0 - (W0*scale)/2;
-    name.style.transform = 'translateX(' + (tx*e) + 'px)';
+    // on mobile the name also rises from low toward center as it grows
+    var riseY = mobile.matches ? (window.innerHeight * 0.18) * (1 - e) : 0;
+    name.style.transform = 'translateX(' + (tx*e) + 'px) translateY(' + riseY + 'px)';
 
     var fade = clamp(1 - p*2.4, 0, 1);
+    var metaFade = clamp(1 - p*5, 0, 1);   // meta clears fast so it never collides with the rising name
     if(p > 0.005){
       if(cube) cube.style.setProperty('opacity', fade, 'important');
-      if(meta) meta.style.setProperty('opacity', fade, 'important');
+      if(meta) meta.style.setProperty('opacity', metaFade, 'important');
     } else {
       // let the load-in animation play at rest
       if(cube) cube.style.removeProperty('opacity');
