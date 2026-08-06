@@ -1101,6 +1101,9 @@ h2.sec-title{
     var top = outer.getBoundingClientRect().top;
     var p = clamp(-top / maxScroll, 0, 1);
     track.style.transform = 'translateX(' + (-p * maxScroll) + 'px)';
+
+    if(dotEls.length){
+      var active = Math.round(p * (dotEls.length - 1));
 })();
 
 // Scroll reveals + stagger — brings the page to life below the hero
