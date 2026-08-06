@@ -1078,6 +1078,9 @@ h2.sec-title{
       var d = document.createElement('div');
       d.className = 'h-progress-dot' + (i === 0 ? ' active' : '');
       dots.appendChild(d);
+    });
+  }
+  var dotEls = dots ? dots.querySelectorAll('.h-progress-dot') : [];
 })();
 
 // Scroll reveals + stagger — brings the page to life below the hero
