@@ -1021,7 +1021,7 @@ h2.sec-title{
   function ease(t){return t<0.5 ? 2*t*t : 1-Math.pow(-2*t+2,2)/2;}
 
   function frame(){
-    if(mobile.matches){ name.style.transform='none'; return; }
+    if(mobile.matches){ name.style.transform='none'; name.style.fontSize=''; return; }
     var top = scroll.getBoundingClientRect().top;
     var runway = scroll.offsetHeight - window.innerHeight;
     var p = clamp(-top / runway, 0, 1);
