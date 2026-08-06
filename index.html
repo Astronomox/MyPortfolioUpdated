@@ -1158,6 +1158,9 @@ h2.sec-title{
   update();
 })();
 
+// Nav: hide on scroll down, show on scroll up
+(function(){
+  var nav = document.querySelector('.nav');
 // Smooth scroll (Lenis) — the Locomotive signature
 (function(){
   if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
