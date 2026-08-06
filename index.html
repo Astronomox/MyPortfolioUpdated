@@ -497,18 +497,7 @@ h2.sec-title{
   .avail-dot::after{animation:none}
 }
 
-/* ---- BACKGROUND SHAPE FIELD (behind all content) ---- */
-#bg-field{
-  position:fixed;
-  inset:0;
-  z-index:0;
-  overflow:hidden;
-  pointer-events:none;
-}
-#bg-field .phys-shape{opacity:0.5}
-.wrap{position:relative;z-index:1}
-
-/* scroll progress bar — Locomotive-style */
+/* scroll progress bar */
 .scroll-progress{
   position:fixed;
   top:0;left:0;
@@ -518,43 +507,6 @@ h2.sec-title{
   z-index:200;
   will-change:width;
 }
-
-.phys-shape{position:absolute;top:0;left:0;will-change:transform}
-.phys-sphere{
-  border-radius:50%;
-  background:radial-gradient(circle at 34% 30%, #434343 0%, #141414 52%, #050505 100%);
-  box-shadow:inset -9px -9px 18px rgba(0,0,0,.85), inset 6px 6px 13px rgba(255,255,255,.06);
-  border:1px solid #262626;
-}
-.phys-cube{
-  border-radius:8px;
-  background:linear-gradient(135deg,#3a3a3a 0%,#161616 46%,#080808 100%);
-  border:1px solid #2e2e2e;
-  box-shadow:inset -7px -7px 15px rgba(0,0,0,.8), inset 5px 5px 11px rgba(255,255,255,.06);
-}
-.phys-cone{
-  clip-path:polygon(50% 4%, 96% 96%, 4% 96%);
-  background:linear-gradient(118deg,#414141 0%,#181818 50%,#070707 100%);
-  filter:drop-shadow(-1px -1px 0 rgba(255,255,255,.05));
-}
-.phys-hex{
-  clip-path:polygon(25% 5%, 75% 5%, 100% 50%, 75% 95%, 25% 95%, 0% 50%);
-  background:linear-gradient(125deg,#444 0%,#181818 50%,#070707 100%);
-  filter:drop-shadow(-1px -1px 0 rgba(255,255,255,.05));
-}
-.phys-diamond{
-  clip-path:polygon(50% 2%, 98% 50%, 50% 98%, 2% 50%);
-  background:linear-gradient(135deg,#464646 0%,#181818 52%,#070707 100%);
-  filter:drop-shadow(-1px -1px 0 rgba(255,255,255,.05));
-}
-.phys-pill{
-  border-radius:999px;
-  background:radial-gradient(circle at 34% 30%, #444 0%, #161616 55%, #050505 100%);
-  box-shadow:inset -8px -8px 16px rgba(0,0,0,.85), inset 5px 5px 12px rgba(255,255,255,.06);
-  border:1px solid #262626;
-}
-@media(max-width:760px){#bg-field{display:none}}
-@media(prefers-reduced-motion: reduce){#bg-field{display:none}}
 
 /* RESPONSIVE */
 @media(max-width:600px){
@@ -571,7 +523,6 @@ h2.sec-title{
 <body>
 
 <div class="scroll-progress" id="scrollProgress"></div>
-<div id="bg-field" aria-hidden="true"></div>
 
 <div class="wrap">
 
@@ -977,68 +928,6 @@ h2.sec-title{
     });
   }, {threshold:0.12, rootMargin:'0px 0px -6% 0px'});
   targets.forEach(function(el){ io.observe(el); });
-})();
-
-// Background shape field — continuous gentle gravity fall behind content
-(function(){
-  var field = document.getElementById('bg-field');
-  if(!field) return;
-  if(window.matchMedia('(max-width:760px)').matches) return;
-  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-  var TYPES = ['phys-sphere','phys-cube','phys-cone','phys-hex','phys-diamond','phys-pill'];
-  function rand(a,b){return a + Math.random()*(b-a);}
-  function pick(a){return a[Math.floor(Math.random()*a.length)];}
-
-  var W = window.innerWidth, H = window.innerHeight;
-  window.addEventListener('resize', function(){ W = window.innerWidth; H = window.innerHeight; });
-
-  var shapes = [];
-  var MAX = 16;
-  var COLUMN = 660;   // reading column — keep shapes mostly out of it
-
-  function spawnX(){
-    var gutter = (W - COLUMN) / 2;
-    if(gutter > 70 && Math.random() < 0.72){
-      return Math.random() < 0.5 ? rand(-30, gutter - 30) : rand(W - gutter + 30, W - 20);
-    }
-    return rand(-30, W - 30);
-  }
-
-  function spawn(){
-    if(shapes.length >= MAX) return;
-    var cls = pick(TYPES);
-    var r = rand(16, 62);
-    var h = r*2;
-    var w = (cls === 'phys-pill') ? h*1.7 : h;
-    var el = document.createElement('div');
-    el.className = 'phys-shape ' + cls;
-    el.style.width = w+'px'; el.style.height = h+'px';
-    field.appendChild(el);
-    shapes.push({
-      el:el, w:w, h:h,
-      x:spawnX(), y:-h - rand(0, 220),
-      vy:rand(18, 55), vx:rand(-14, 14),
-      g:rand(150, 340), rot:rand(0,360), vr:rand(-35, 35)
-    });
-  }
-
-  var last = performance.now();
-  function loop(now){
-    var dt = Math.min((now-last)/1000, 0.05); last = now;
-    for(var i=shapes.length-1; i>=0; i--){
-      var s = shapes[i];
-      s.vy += s.g*dt; s.y += s.vy*dt; s.x += s.vx*dt; s.rot += s.vr*dt;
-      s.el.style.transform = 'translate('+s.x.toFixed(1)+'px,'+s.y.toFixed(1)+'px) rotate('+s.rot.toFixed(1)+'deg)';
-      if(s.y > H + s.h + 40){ field.removeChild(s.el); shapes.splice(i,1); }
-    }
-    requestAnimationFrame(loop);
-  }
-  requestAnimationFrame(loop);
-
-  // seed a few, then keep a steady trickle
-  for(var k=0; k<7; k++) setTimeout(spawn, k*280);
-  setInterval(spawn, 620);
 })();
 
 // Scroll progress bar
