@@ -1091,6 +1091,9 @@ h2.sec-title{
     var trackW = track.scrollWidth;
     var viewW  = sticky.clientWidth;
     maxScroll  = Math.max(0, trackW - viewW);
+    outer.style.height = (maxScroll + window.innerHeight) + 'px';
+  }
+
 })();
 
 // Scroll reveals + stagger — brings the page to life below the hero
