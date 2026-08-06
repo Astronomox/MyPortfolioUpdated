@@ -249,6 +249,8 @@ section#hero{padding:0}
 .hero-cube-shot{display:none}
 .about-cube{display:none}
 [data-theme="dark"] .hero-cube{border-color:transparent}
+.hero-cube-shot,
+.headshot{cursor:pointer}
 
 /* ABOUT (after hero) */
 #mobile-hero{
@@ -620,6 +622,75 @@ h2.sec-title{
   background:var(--text);
   z-index:200;
   will-change:width;
+}
+
+/* HEADSHOT LIGHTBOX */
+html.lb-lock, body.lb-lock{
+  overflow:hidden;
+}
+body.lb-lock{
+  position:fixed;
+  left:0;right:0;
+  width:100%;
+}
+.lightbox{
+  position:fixed;
+  inset:0;
+  z-index:1000;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(0,0,0,0.92);
+  opacity:0;
+  visibility:hidden;
+  transition:opacity .25s ease;
+  padding:40px;
+}
+.lightbox.open{
+  opacity:1;
+  visibility:visible;
+}
+.lightbox-img{
+  max-width:90vw;
+  max-height:90vh;
+  width:auto;
+  height:auto;
+  border-radius:12px;
+  object-fit:contain;
+  background:var(--bg-raised);
+  transform:scale(0.96);
+  transition:transform .25s ease;
+}
+.lightbox.open .lightbox-img{
+  transform:scale(1);
+}
+.lightbox-close{
+  position:fixed;
+  top:22px;
+  right:24px;
+  width:44px;
+  height:44px;
+  border-radius:50%;
+  border:1px solid rgba(255,255,255,0.2);
+  background:rgba(255,255,255,0.08);
+  color:#fff;
+  font-size:22px;
+  line-height:1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  transition:background .2s ease;
+}
+.lightbox-close:hover{background:rgba(255,255,255,0.18)}
+.lightbox-close:focus-visible{outline:2px solid #fff;outline-offset:2px}
+
+@media(prefers-reduced-motion: reduce){
+  .lightbox, .lightbox-img{transition:none}
+}
+@media(max-width:760px){
+  .lightbox{padding:20px}
+  .lightbox-close{top:16px;right:16px;width:40px;height:40px;font-size:20px}
 }
 
 /* RESPONSIVE */
@@ -1258,10 +1329,96 @@ h2.sec-title{
   if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   if(typeof window.Lenis !== 'function') return;   // CDN not loaded → native scroll
   var lenis = new window.Lenis({ lerp:0.09, wheelMultiplier:1 });
+  window.__lenis = lenis; // exposed so the lightbox can pause/resume it
   function raf(t){ lenis.raf(t); requestAnimationFrame(raf); }
   requestAnimationFrame(raf);
 })();
+
+// Headshot lightbox — click any headshot to view fullscreen
+(function(){
+  var overlay = document.getElementById('lightbox');
+  var lbImg   = document.getElementById('lightboxImg');
+  var closeBtn = document.getElementById('lightboxClose');
+  if(!overlay || !lbImg || !closeBtn) return;
+
+  var triggers = document.querySelectorAll('img[src="headshot.png"]');
+  if(!triggers.length) return;
+
+  var savedScrollY = 0;
+  var lastFocused = null;
+  var isOpen = false;
+
+  triggers.forEach(function(img){
+    img.setAttribute('tabindex', '0');
+    img.setAttribute('role', 'button');
+    if(!img.hasAttribute('aria-label')) img.setAttribute('aria-label', 'View photo fullscreen');
+    img.addEventListener('click', function(){ open(img); });
+    img.addEventListener('keydown', function(e){
+      if(e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar'){
+        e.preventDefault();
+        open(img);
+      }
+    });
+  });
+
+  function open(img){
+    if(isOpen) return;
+    isOpen = true;
+    lastFocused = document.activeElement;
+
+    lbImg.src = img.currentSrc || img.src;
+    lbImg.alt = img.alt || 'Abdullahi Oriola';
+
+    // scroll lock: fixed-position technique — blocks wheel, touch, and
+    // keyboard-driven scroll uniformly, and avoids iOS Safari background scroll
+    savedScrollY = window.scrollY || window.pageYOffset || 0;
+    document.documentElement.classList.add('lb-lock');
+    document.body.classList.add('lb-lock');
+    document.body.style.top = (-savedScrollY) + 'px';
+
+    if(window.__lenis && typeof window.__lenis.stop === 'function') window.__lenis.stop();
+
+    overlay.classList.add('open');
+    overlay.setAttribute('aria-hidden', 'false');
+    document.addEventListener('keydown', onKeydown);
+    closeBtn.focus();
+  }
+
+  function close(){
+    if(!isOpen) return;
+    isOpen = false;
+
+    overlay.classList.remove('open');
+    overlay.setAttribute('aria-hidden', 'true');
+
+    document.documentElement.classList.remove('lb-lock');
+    document.body.classList.remove('lb-lock');
+    document.body.style.top = '';
+    window.scrollTo(0, savedScrollY);
+
+    if(window.__lenis && typeof window.__lenis.start === 'function') window.__lenis.start();
+
+    document.removeEventListener('keydown', onKeydown);
+    if(lastFocused && typeof lastFocused.focus === 'function') lastFocused.focus();
+  }
+
+  function onKeydown(e){
+    if(e.key === 'Escape') close();
+  }
+
+  closeBtn.addEventListener('click', close);
+  overlay.addEventListener('click', function(e){
+    if(e.target === overlay) close(); // backdrop only, not the image
+  });
+})();
 </script>
+
+<!-- HEADSHOT LIGHTBOX (single reusable overlay, appended at top level so it
+     always stacks above everything regardless of transforms elsewhere) -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo of Abdullahi Oriola" aria-hidden="true">
+  <button type="button" class="lightbox-close" id="lightboxClose" aria-label="Close">&times;</button>
+  <img src="" alt="" class="lightbox-img" id="lightboxImg">
+</div>
 
 </body>
 </html>
