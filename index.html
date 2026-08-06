@@ -1066,6 +1066,8 @@ h2.sec-title{
   var sticky = document.getElementById('hProjectsSticky');
   var track  = document.getElementById('hProjectsTrack');
   var dots   = document.getElementById('hProgressWrap');
+  if(!outer || !sticky || !track) return;
+
 })();
 
 // Scroll reveals + stagger — brings the page to life below the hero
