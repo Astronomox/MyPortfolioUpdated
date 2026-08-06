@@ -1014,6 +1014,7 @@ h2.sec-title{
     var r = name.getBoundingClientRect();
     W0 = r.width;
     L0 = r.left;   // left edge in viewport at rest
+    F0 = parseFloat(window.getComputedStyle(name).fontSize);
   }
 
   function clamp(v,a,b){return Math.max(a,Math.min(b,v));}
