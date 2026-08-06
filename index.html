@@ -1060,6 +1060,62 @@ h2.sec-title{
   setTimeout(init, 200);
 })();
 
+// Horizontal pinned project gallery — vertical scroll drives horizontal pan
+(function(){
+  var outer  = document.getElementById('hProjectsOuter');
+  var sticky = document.getElementById('hProjectsSticky');
+  var track  = document.getElementById('hProjectsTrack');
+  var dots   = document.getElementById('hProgressWrap');
+  if(!outer || !sticky || !track) return;
+
+  var mobile = window.matchMedia('(max-width:760px)');
+  var maxScroll = 0;
+  var cards = track.querySelectorAll('.h-card');
+
+  // build dot indicators
+  if(dots){
+    cards.forEach(function(_, i){
+      var d = document.createElement('div');
+      d.className = 'h-progress-dot' + (i === 0 ? ' active' : '');
+      dots.appendChild(d);
+    });
+  }
+  var dotEls = dots ? dots.querySelectorAll('.h-progress-dot') : [];
+
+  function measure(){
+    if(mobile.matches){
+      outer.style.height = 'auto';
+      track.style.transform = 'none';
+      return;
+    }
+    var trackW = track.scrollWidth;
+    var viewW  = sticky.clientWidth;
+    maxScroll  = Math.max(0, trackW - viewW);
+    outer.style.height = (maxScroll + window.innerHeight) + 'px';
+  }
+
+  function clamp(v,a,b){ return Math.max(a, Math.min(b, v)); }
+
+  function frame(){
+    if(mobile.matches || maxScroll <= 0) return;
+    var top = outer.getBoundingClientRect().top;
+    var p = clamp(-top / maxScroll, 0, 1);
+    track.style.transform = 'translateX(' + (-p * maxScroll) + 'px)';
+
+    if(dotEls.length){
+      var active = Math.round(p * (dotEls.length - 1));
+      dotEls.forEach(function(d, i){
+        d.classList.toggle('active', i === active);
+      });
+    }
+  }
+
+  window.addEventListener('scroll', frame, {passive:true});
+  window.addEventListener('resize', function(){ measure(); frame(); });
+  window.addEventListener('load', function(){ setTimeout(function(){ measure(); frame(); }, 400); });
+  setTimeout(function(){ measure(); frame(); }, 200);
+})();
+
 // Scroll reveals + stagger — brings the page to life below the hero
 (function(){
   var sel = '.sec-title, .exp-item, .proj-item, .more-row, .client-item, .skills-block, .edu-item, .clink, #about .prose p, .foot';
