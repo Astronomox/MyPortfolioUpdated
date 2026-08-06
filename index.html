@@ -1111,6 +1111,9 @@ h2.sec-title{
   }
 
   window.addEventListener('scroll', frame, {passive:true});
+  window.addEventListener('resize', function(){ measure(); frame(); });
+  window.addEventListener('load', function(){ setTimeout(function(){ measure(); frame(); }, 400); });
+  setTimeout(function(){ measure(); frame(); }, 200);
 })();
 
 // Scroll reveals + stagger — brings the page to life below the hero
