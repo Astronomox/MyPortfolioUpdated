@@ -1036,7 +1036,7 @@ h2.sec-title{
 
     // keep the growing box centered horizontally (width tracks font-size ~linearly)
     var tx = (vw/2) - L0 - (W0*scale)/2;
-    name.style.transform = 'translateX(' + (tx*e) + 'px) scale(' + scale + ')';
+    name.style.transform = 'translateX(' + (tx*e) + 'px)';
 
     var fade = clamp(1 - p*2.4, 0, 1);
     if(p > 0.005){
