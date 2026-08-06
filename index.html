@@ -1171,6 +1171,8 @@ h2.sec-title{
     lastY = y;
     ticking = false;
   }
+  window.addEventListener('scroll', function(){
+    if(!ticking){ requestAnimationFrame(update); ticking = true; }
 // Smooth scroll (Lenis) — the Locomotive signature
 (function(){
   if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
