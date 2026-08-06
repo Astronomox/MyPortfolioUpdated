@@ -1047,6 +1047,9 @@ h2.sec-title{
       if(cube) cube.style.removeProperty('opacity');
       if(meta) meta.style.removeProperty('opacity');
     }
+
+    // parallax: cube drifts slower than the scroll, name drifts a touch faster
+    if(cube) cube.style.transform = 'translateY(calc(-50% + ' + (p*70) + 'px))';
   }
 
   function init(){ measure(); frame(); }
