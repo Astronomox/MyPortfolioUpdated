@@ -300,7 +300,14 @@ section#hero{padding:0}
   .hero-sticky{height:100svh}
   .hero-stage{padding:0 22px}
   .hero-name{font-size:27px}            /* smaller base so the zoom has room to grow */
-  .hero-cube{display:none}              /* drop the side cube on mobile — name is the focus */
+  .hero-cube{
+    width:min(210px,52vw);
+    height:min(210px,52vw);
+    right:auto;
+    left:50%;
+    top:30%;
+    transform:translate(-50%,-50%);
+  }
   .hero-meta{left:22px;bottom:calc(50% - 92px)}
   .hero-sub{font-size:13.5px}
   .avail{justify-content:flex-start;font-size:12px}
@@ -1093,8 +1100,14 @@ h2.sec-title{
       if(meta) meta.style.removeProperty('opacity');
     }
 
-    // parallax: cube drifts slower than the scroll, name drifts a touch faster
-    if(cube) cube.style.transform = 'translateY(calc(-50% + ' + (p*70) + 'px))';
+    // parallax: cube drifts slower than the scroll
+    if(cube){
+      if(mobile.matches){
+        cube.style.transform = 'translate(-50%, calc(-50% + ' + (p*60) + 'px))';
+      } else {
+        cube.style.transform = 'translateY(calc(-50% + ' + (p*70) + 'px))';
+      }
+    }
   }
 
   function init(){ measure(); frame(); }
