@@ -1163,6 +1163,9 @@ h2.sec-title{
   var nav = document.querySelector('.nav');
   if(!nav) return;
   var lastY = window.scrollY, ticking = false;
+
+  function update(){
+    var y = window.scrollY;
 // Smooth scroll (Lenis) — the Locomotive signature
 (function(){
   if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
