@@ -1083,6 +1083,9 @@ h2.sec-title{
   var dotEls = dots ? dots.querySelectorAll('.h-progress-dot') : [];
 
   function measure(){
+    if(mobile.matches){
+      outer.style.height = 'auto';
+      track.style.transform = 'none';
 })();
 
 // Scroll reveals + stagger — brings the page to life below the hero
