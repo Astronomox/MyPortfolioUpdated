@@ -1094,6 +1094,8 @@ h2.sec-title{
     outer.style.height = (maxScroll + window.innerHeight) + 'px';
   }
 
+  function clamp(v,a,b){ return Math.max(a, Math.min(b, v)); }
+
 })();
 
 // Scroll reveals + stagger — brings the page to life below the hero
