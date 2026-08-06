@@ -258,17 +258,17 @@ section#hero{padding:0}
 #about{padding-top:48px}
 .about-top{
   display:flex;
-  align-items:flex-start;
+  align-items:center;
   gap:28px;
   margin-bottom:36px;
 }
 .headshot{
-  width:96px;
-  height:96px;
+  width:150px;
+  height:150px;
   border-radius:50%;
   object-fit:cover;
   flex-shrink:0;
-  filter:grayscale(0.15);
+  filter:none;
   background:var(--bg-raised);
 }
 .h1{
@@ -304,8 +304,8 @@ section#hero{padding:0}
   .hero-name{font-size:27px}            /* smaller base so the zoom has room to grow */
   /* SWAP: hero visual is now the headshot circle (was the cube) */
   .hero-cube{
-    width:min(150px,40vw);
-    height:min(150px,40vw);
+    width:min(220px,60vw);
+    height:min(220px,60vw);
     right:auto;
     left:50%;
     top:26%;
@@ -315,7 +315,7 @@ section#hero{padding:0}
     border:none;
   }
   .hero-cube video{display:none}
-  .hero-cube-shot{display:block;width:100%;height:100%;object-fit:cover;filter:grayscale(0.15)}
+  .hero-cube-shot{display:block;width:100%;height:100%;object-fit:cover;filter:none}
   .hero-meta{left:22px;bottom:12%}
   .hero-sub{font-size:13.5px}
   .avail{justify-content:flex-start;font-size:12px}
